@@ -13,8 +13,6 @@ class App extends React.Component {
                 </div>
                 <Order />
                 <Inventory />
-
-
             </div>
         )
     }
