@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import './css/style.css';
 import App from './components/App';
-import {BrowserRouter, Route, Link, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
 import StorePicker from "./components/StorePicker";
 import NotFound from './components/NotFound';
