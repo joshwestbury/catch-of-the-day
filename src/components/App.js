@@ -4,6 +4,8 @@ import Order from './Order';
 import Inventory from './Inventory';
 //we must import sampleFishes
 import sampleFishes from  '../sample-fishes';
+//import Fish component
+import Fish from './Fish';
 
 class App extends React.Component {
     constructor() {
@@ -32,19 +34,32 @@ class App extends React.Component {
         this.setState({ fishes })
     }
 
-    //after declaring loadSamples we must pass it down to the Inventory component through
-    //props by adding to the <Inventory/> jsx element below
     loadSamples() {
         this.setState({
             fishes: sampleFishes
         });
     }
 
+    //call Fish component within an <ul> in jsx.
+
+    //we need to loop over every single element in state to render all of the Fish data.
+        //typically we would loop over data with .map(), but the map function only works with arrays.
+        //therefore we must use Object.keys() which will return an array of all of the keys of the objec that is passed into it (e.g. Object.keys(this.state.fishes) )
+        //additionally we must inclide a unique key for each fish (key={key}).
+        //whatever fish we currently have then needs to pass all of the data about the fish to our Fish component. This is done via details property within .map() (NOTE in .fishes[key], the key refers to single fish)
+            //in react dev tools go to Fish and you will see under props there is a details prop.
     render() {
         return (
             <div className="catch-of-the-day">
                 <div className="menu">
                     <Header tagline="Fresh Seafood Market" />
+                    <ul className="list-of-fishes">
+                        {
+                            Object
+                                .keys(this.state.fishes)
+                                .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+                        }
+                    </ul>
                 </div>
                 <Order />
                 <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />

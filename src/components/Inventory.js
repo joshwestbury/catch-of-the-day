@@ -1,9 +1,6 @@
 import React from 'react';
 import AddFishForm from './AddFishForm';
 
-//add a button to load sample fish data.
-    //when button is clicked it should run the loadSamples() function.
-    //loadSamples is declared on state in App.js and passed via props to Inventory.js
 class Inventory extends React.Component {
     render() {
         return (
