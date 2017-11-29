@@ -3,15 +3,10 @@ import React from 'react';
 
 
 class AddFishForm extends React.Component {
-//First: create an 'add fish' form that
-//Second: when someone clicks the button 'Add Item' a fish object is created that takes all of the data and puts it into an object for us.
-
-    // create a createFish() method
     createFish(event) {
         event.preventDefault();
         console.log('Gonna Make some Fish');
-        //next we must take all of the input from form fields and put it into an object.
-        //first, create a fish object and use 'ref' in jsx.
+
         const fish = {
             name: this.name.value,
             price: this.price.value,
@@ -19,14 +14,10 @@ class AddFishForm extends React.Component {
             desc: this.desc.value,
             image: this.image.value,
         }
-        //next we must get this fish object into our state
-                //NOTE: state is always tied to a specific compondent but often components need to share state.
-                //Here we are going to set state in the parent app.js and pass it down to the children components.
 
         //now we call addFish() form App.js and pass in the fish object.
         this.props.addFish(fish);
-        //use vanilla js to rest the form once a fish has been entered.
-            //fishForm is put on the form itself with a 'ref' attribute.
+        //reset the form once a fish has been entered.
         this.fishForm.reset();
     }
 

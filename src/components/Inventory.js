@@ -1,15 +1,16 @@
 import React from 'react';
 import AddFishForm from './AddFishForm';
 
-
-//this.props.addFish is passed to the AddFishForm element from App.js.
-    //props is the way we pass things down (wheather it's data or referents) across components is thorugh props.
+//add a button to load sample fish data.
+    //when button is clicked it should run the loadSamples() function.
+    //loadSamples is declared on state in App.js and passed via props to Inventory.js
 class Inventory extends React.Component {
     render() {
         return (
             <div>
                 <p>Inventory</p>
                 <AddFishForm addFish={this.props.addFish} />
+                <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
             </div>
         )
     }

@@ -1,14 +1,17 @@
 import React from 'react';
-import Header from "./Header";
-import Order from "./Order";
-import Inventory from "./Inventory";
+import Header from './Header';
+import Order from './Order';
+import Inventory from './Inventory';
+//we must import sampleFishes
+import sampleFishes from  '../sample-fishes';
 
 class App extends React.Component {
-    //use a constructor method to set state: a fish state and an order state.
     constructor() {
         super();
 
         this.addFish = this.addFish.bind(this);
+        //we must bind 'this' to loadSamples() just like we did with addFish above.
+        this.loadSamples = this.loadSamples.bind(this);
         //initial state (getinitialstate)
         this.state = {
             fishes: {},
@@ -16,12 +19,9 @@ class App extends React.Component {
         };
     }
 
-    //now we need to pass state down stream to the chilcren. We do this with a method calld "addFish"
-    //how do I call the addFish function from a child component (e.g. Inventory)?
     addFish(fish) {
         //update state
-            //to update state we must first make a copy of current state (do not update state directly)
-        const fishes = {...this.state.fishes}; // ... is a spread that makes a copy of existing state and puts into 'fishes'
+        const fishes = {...this.state.fishes};
 
         //add in new fish
         const timestamp = Date.now();
@@ -29,12 +29,17 @@ class App extends React.Component {
         fishes[`fish-${timestamp}`] = fish;
 
         //set state - we tell react that we have updated a particular piece of state
-        this.setState({ fishes })  //in ES6 fishes: fishes can be just fishes.
+        this.setState({ fishes })
     }
 
-    //how do I call the addFish function from a child component (e.g. Inventory)?
-        //addFish={this.addFish} in Inventory jsx element below. addFish is now passed down via props.
-        //Note - we also now need to pass addFish() in the AddFishForm jsx element within the Inventory component as well .
+    //after declaring loadSamples we must pass it down to the Inventory component through
+    //props by adding to the <Inventory/> jsx element below
+    loadSamples() {
+        this.setState({
+            fishes: sampleFishes
+        });
+    }
+
     render() {
         return (
             <div className="catch-of-the-day">
@@ -42,7 +47,7 @@ class App extends React.Component {
                     <Header tagline="Fresh Seafood Market" />
                 </div>
                 <Order />
-                <Inventory addFish={this.addFish} />
+                <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
             </div>
         )
     }
