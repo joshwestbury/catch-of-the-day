@@ -4,6 +4,7 @@ import './css/style.css';
 import App from './components/App';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
+
 import StorePicker from "./components/StorePicker";
 import NotFound from './components/NotFound';
 
@@ -20,3 +21,6 @@ const Root = () => {
 }
 
 render(<Root/>, document.querySelector('#main'));
+
+
+// <Route path = "/store/:storeId" render={props => <App {...props} />} />
