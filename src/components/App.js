@@ -41,7 +41,6 @@ class App extends React.Component {
         });
     }
 
-    //we want this method to fire when the user clicks the "Add To Order" button
     addToOrder(key) {
         //take a copy of state
         const order = {...this.state.order};
@@ -51,8 +50,6 @@ class App extends React.Component {
         this.setState({ order });
     }
 
-    //if we need to explicitly access the key, we must pass it down as a prop. In this case we made up a prop called index={key}.
-        //NOTE the key in the index props is for us while the key in key={key} is for react.
     render() {
         return (
             <div className="catch-of-the-day">
@@ -66,7 +63,7 @@ class App extends React.Component {
                         }
                     </ul>
                 </div>
-                <Order />
+                <Order fishes={this.state.fishes} order={this.state.order} />
                 <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
             </div>
         )

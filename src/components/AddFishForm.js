@@ -15,9 +15,7 @@ class AddFishForm extends React.Component {
             image: this.image.value,
         }
 
-        //now we call addFish() form App.js and pass in the fish object.
         this.props.addFish(fish);
-        //reset the form once a fish has been entered.
         this.fishForm.reset();
     }
 
