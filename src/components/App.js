@@ -12,8 +12,9 @@ class App extends React.Component {
         super();
 
         this.addFish = this.addFish.bind(this);
-        //we must bind 'this' to loadSamples() just like we did with addFish above.
         this.loadSamples = this.loadSamples.bind(this);
+        //we must bind 'this' to addToOrder() just like we did with addFish and loadSamples above.
+        this.addToOrder = this.addToOrder.bind(this);
         //initial state (getinitialstate)
         this.state = {
             fishes: {},
@@ -40,14 +41,18 @@ class App extends React.Component {
         });
     }
 
-    //call Fish component within an <ul> in jsx.
+    //we want this method to fire when the user clicks the "Add To Order" button
+    addToOrder(key) {
+        //take a copy of state
+        const order = {...this.state.order};
+        //update order or add the new number of fish ordered
+        order[key] = order[key] + 1 || 1;
+        //update state
+        this.setState({ order });
+    }
 
-    //we need to loop over every single element in state to render all of the Fish data.
-        //typically we would loop over data with .map(), but the map function only works with arrays.
-        //therefore we must use Object.keys() which will return an array of all of the keys of the objec that is passed into it (e.g. Object.keys(this.state.fishes) )
-        //additionally we must inclide a unique key for each fish (key={key}).
-        //whatever fish we currently have then needs to pass all of the data about the fish to our Fish component. This is done via details property within .map() (NOTE in .fishes[key], the key refers to single fish)
-            //in react dev tools go to Fish and you will see under props there is a details prop.
+    //if we need to explicitly access the key, we must pass it down as a prop. In this case we made up a prop called index={key}.
+        //NOTE the key in the index props is for us while the key in key={key} is for react.
     render() {
         return (
             <div className="catch-of-the-day">
@@ -57,7 +62,7 @@ class App extends React.Component {
                         {
                             Object
                                 .keys(this.state.fishes)
-                                .map(key => <Fish key={key} details={this.state.fishes[key]}/>)
+                                .map(key => <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)
                         }
                     </ul>
                 </div>

@@ -1,19 +1,23 @@
 //create Fish component
 
 import React from 'react';
-
-// the formatPrice() function takes care of formating the price.
-//Note that details.price is then passed through formatePrice in jsx.
 import { formatPrice } from '../helpers';
 
-//Since we are looping over the fishes in App.js we can now access the specific details of the fish in jsx.
-    //NOTE: to put a variable in jsx we need to put it into {} brackets
 
-//
 class Fish extends React.Component {
     render() {
-        //simplify code by assigning this.props.details to details. Otherwise we would have to call this.props.details.... every time.
-        const details = this.props.details
+        const details = this.props.details;
+        //check to see if details.status is available
+        const index = this.props.index;
+        //this.props.index holds a key is being passed down from App.js. 
+        const isAvailable = details.status === 'available';
+        //check to see if buttonText is available. Note that the following conditional uses a ternerary operator (?).
+        const buttonText = isAvailable ? 'Add to Order ' : 'Sold Out!';
+        //next disable button if sold out. (see disabled attribute on <button> )
+            //if the order is not available, react will toggle disabled attribute on and off.
+
+        //how does addToOrder() dynamically execute no matter what fish is clicked on.
+            //we must pass in a key, which is set as a prop on App.js (index={key})
         return (
             <li className = 'menu-fish'>
                 <img src={details.image} alt={details.name} />
@@ -22,7 +26,7 @@ class Fish extends React.Component {
                     <span className = 'price'>{formatPrice(details.price)}</span>
                 </h3>
                 <p>{details.desc}</p>
-                <button>Add to Order</button>
+                <button onClick = {() => this.props.addToOrder(index)} disabled={!isAvailable}>{buttonText}</button>
             </li>
         )
     }
