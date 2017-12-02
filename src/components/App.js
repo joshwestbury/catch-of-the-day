@@ -6,6 +6,7 @@ import Inventory from './Inventory';
 import sampleFishes from  '../sample-fishes';
 //import Fish component
 import Fish from './Fish';
+import base from '../base';
 
 class App extends React.Component {
     constructor() {
@@ -16,10 +17,26 @@ class App extends React.Component {
         //we must bind 'this' to addToOrder() just like we did with addFish and loadSamples above.
         this.addToOrder = this.addToOrder.bind(this);
         //initial state (getinitialstate)
+
+        //any change that happens with fishes will be synced with firebase (using a package called Rebase)
         this.state = {
             fishes: {},
             order: {}
         };
+    }
+
+    //componentWillMount is a react lifecycle hook that allows us to hook into our component right before it is rendered and sync our component state with our Firebase state
+    componentWillMount() {
+      //this runs right before the <App> is rendered
+      this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
+          context: this,
+          state: 'fishes'
+      });
+    }
+
+    //to switch from one store to another, we need to stop syncing when we go to another store.
+    componentWillUnmount() {
+        base.removeBinding(this.ref);
     }
 
     addFish(fish) {
