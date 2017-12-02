@@ -21,6 +21,3 @@ const Root = () => {
 }
 
 render(<Root/>, document.querySelector('#main'));
-
-
-// <Route path = "/store/:storeId" render={props => <App {...props} />} />

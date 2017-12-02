@@ -14,30 +14,52 @@ class App extends React.Component {
 
         this.addFish = this.addFish.bind(this);
         this.loadSamples = this.loadSamples.bind(this);
-        //we must bind 'this' to addToOrder() just like we did with addFish and loadSamples above.
         this.addToOrder = this.addToOrder.bind(this);
-        //initial state (getinitialstate)
 
-        //any change that happens with fishes will be synced with firebase (using a package called Rebase)
         this.state = {
             fishes: {},
             order: {}
         };
     }
 
-    //componentWillMount is a react lifecycle hook that allows us to hook into our component right before it is rendered and sync our component state with our Firebase state
     componentWillMount() {
-      //this runs right before the <App> is rendered
+        //this runs right before <App> is rendered
       this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
           context: this,
           state: 'fishes'
       });
+
+      //check if there is any refernce in localStorage
+      const localStorageRef = localStorage.getItem(`order-${this.props.match.params.storeId}`);
+
+      if(localStorageRef) {
+         // update our App component's order state
+            //however we must convert string back to object with JSON.parse
+         this.setState({
+             order: JSON.parse(localStorageRef)
+         });
+      }
+
     }
 
-    //to switch from one store to another, we need to stop syncing when we go to another store.
     componentWillUnmount() {
         base.removeBinding(this.ref);
     }
+
+    //what we need to do is whenever order state is updated we need to store it in local storage.
+    //when someone loads page for first time, we're going to check to see if something is in local storage. If there is something in local storage, we're going to restore our state via one of the above lifecycle hooks.
+
+    //the lifecycle hook omponentWillUpdate runs when either props or state changes
+        //NOTE: conside using the lifecycle hook "shouldComponentUpdate". This will fix issue where there is a double render when page loads.
+    componentWillUpdate (nextProps, nextState) {
+        // console.log('Something changed');
+        // console.log({nextProps, nextState});
+
+        //you cannot store an object, only a string. Thus we need to convert to JSON with JSON.stringify.
+        localStorage.setItem(`order-${this.props.match.params.storeId}`, JSON.stringify(nextState.order));
+
+    }
+
 
     addFish(fish) {
         //update state
@@ -80,7 +102,11 @@ class App extends React.Component {
                         }
                     </ul>
                 </div>
-                <Order fishes={this.state.fishes} order={this.state.order} />
+                <Order
+                    fishes={this.state.fishes}
+                    order={this.state.order}
+                    params={this.props.match.params}
+                />
                 <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
             </div>
         )

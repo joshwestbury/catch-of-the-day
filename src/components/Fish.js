@@ -1,5 +1,3 @@
-//create Fish component
-
 import React from 'react';
 import { formatPrice } from '../helpers';
 
@@ -10,7 +8,7 @@ class Fish extends React.Component {
         const index = this.props.index;
         const isAvailable = details.status === 'available';
         const buttonText = isAvailable ? 'Add to Order ' : 'Sold Out!';
-        
+
         return (
             <li className = 'menu-fish'>
                 <img src={details.image} alt={details.name} />

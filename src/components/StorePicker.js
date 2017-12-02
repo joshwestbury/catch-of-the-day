@@ -16,7 +16,6 @@ class StorePicker extends React.Component {
         //second: transition from / to /store/:storeId
         const storeId = this.storeInput.value;
         this.props.history.push(`/store/${storeId}`)
-
         //this.props.location
         //this.props.match
         // this.context.router.transitionTo(`/store/${storeId}`)
