@@ -2,9 +2,7 @@ import React from 'react';
 import Header from './Header';
 import Order from './Order';
 import Inventory from './Inventory';
-//we must import sampleFishes
 import sampleFishes from  '../sample-fishes';
-//import Fish component
 import Fish from './Fish';
 import base from '../base';
 
@@ -16,6 +14,8 @@ class App extends React.Component {
         this.loadSamples = this.loadSamples.bind(this);
         this.addToOrder = this.addToOrder.bind(this);
         this.updateFish = this.updateFish.bind(this);
+        this.removeFish = this.removeFish.bind(this);
+        this.removeFromOrder = this.removeFromOrder.bind(this);
 
         this.state = {
             fishes: {},
@@ -24,18 +24,14 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        //this runs right before <App> is rendered
       this.ref = base.syncState(`${this.props.match.params.storeId}/fishes`, {
           context: this,
           state: 'fishes'
       });
 
-      //check if there is any refernce in localStorage
       const localStorageRef = localStorage.getItem(`order-${this.props.match.params.storeId}`);
 
       if(localStorageRef) {
-         // update our App component's order state
-            //however we must convert string back to object with JSON.parse
          this.setState({
              order: JSON.parse(localStorageRef)
          });
@@ -53,22 +49,23 @@ class App extends React.Component {
 
 
     addFish(fish) {
-        //update state
         const fishes = {...this.state.fishes};
-
-        //add in new fish
         const timestamp = Date.now();
-        // we are taking fish object from AddFishForm component and passing to this method.
         fishes[`fish-${timestamp}`] = fish;
-
-        //set state - we tell react that we have updated a particular piece of state
         this.setState({ fishes })
     }
 
-    //this method allows us to pass updatedFish from Inventory.js to App.js
     updateFish (key, updatedFish) {
         const fishes = {...this.state.fishes};
         fishes[key] = updatedFish;
+        this.setState({ fishes });
+    }
+
+    //delete item
+    removeFish(key) {
+        const fishes = {...this.state.fishes};
+        //to delete with firebase we must set fish to null
+        fishes[key] = null;
         this.setState({ fishes });
     }
 
@@ -79,11 +76,16 @@ class App extends React.Component {
     }
 
     addToOrder(key) {
-        //take a copy of state
         const order = {...this.state.order};
-        //update order or add the new number of fish ordered
         order[key] = order[key] + 1 || 1;
-        //update state
+        this.setState({ order });
+    }
+
+    //delete from order
+    removeFromOrder(key) {
+        const order = {...this.state.order};
+        //since oder is stored in local storage we can use delete order[key] rather than setting to null (as in removeFish()).
+        delete order[key];
         this.setState({ order });
     }
 
@@ -104,9 +106,11 @@ class App extends React.Component {
                     fishes={this.state.fishes}
                     order={this.state.order}
                     params={this.props.match.params}
+                    removeFromOrder={this.removeFromOrder}
                 />
             <Inventory
                 addFish={this.addFish}
+                removeFish={this.removeFish}
                 loadSamples={this.loadSamples}
                 fishes={this.state.fishes}
                 updateFish={this.updateFish}
