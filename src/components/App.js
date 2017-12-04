@@ -15,6 +15,7 @@ class App extends React.Component {
         this.addFish = this.addFish.bind(this);
         this.loadSamples = this.loadSamples.bind(this);
         this.addToOrder = this.addToOrder.bind(this);
+        this.updateFish = this.updateFish.bind(this);
 
         this.state = {
             fishes: {},
@@ -46,18 +47,8 @@ class App extends React.Component {
         base.removeBinding(this.ref);
     }
 
-    //what we need to do is whenever order state is updated we need to store it in local storage.
-    //when someone loads page for first time, we're going to check to see if something is in local storage. If there is something in local storage, we're going to restore our state via one of the above lifecycle hooks.
-
-    //the lifecycle hook omponentWillUpdate runs when either props or state changes
-        //NOTE: conside using the lifecycle hook "shouldComponentUpdate". This will fix issue where there is a double render when page loads.
     componentWillUpdate (nextProps, nextState) {
-        // console.log('Something changed');
-        // console.log({nextProps, nextState});
-
-        //you cannot store an object, only a string. Thus we need to convert to JSON with JSON.stringify.
         localStorage.setItem(`order-${this.props.match.params.storeId}`, JSON.stringify(nextState.order));
-
     }
 
 
@@ -72,6 +63,13 @@ class App extends React.Component {
 
         //set state - we tell react that we have updated a particular piece of state
         this.setState({ fishes })
+    }
+
+    //this method allows us to pass updatedFish from Inventory.js to App.js
+    updateFish (key, updatedFish) {
+        const fishes = {...this.state.fishes};
+        fishes[key] = updatedFish;
+        this.setState({ fishes });
     }
 
     loadSamples() {
@@ -107,7 +105,12 @@ class App extends React.Component {
                     order={this.state.order}
                     params={this.props.match.params}
                 />
-                <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
+            <Inventory
+                addFish={this.addFish}
+                loadSamples={this.loadSamples}
+                fishes={this.state.fishes}
+                updateFish={this.updateFish}
+            />
             </div>
         )
     }
