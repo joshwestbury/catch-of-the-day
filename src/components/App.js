@@ -61,10 +61,8 @@ class App extends React.Component {
         this.setState({ fishes });
     }
 
-    //delete item
     removeFish(key) {
         const fishes = {...this.state.fishes};
-        //to delete with firebase we must set fish to null
         fishes[key] = null;
         this.setState({ fishes });
     }
@@ -81,10 +79,8 @@ class App extends React.Component {
         this.setState({ order });
     }
 
-    //delete from order
     removeFromOrder(key) {
         const order = {...this.state.order};
-        //since oder is stored in local storage we can use delete order[key] rather than setting to null (as in removeFish()).
         delete order[key];
         this.setState({ order });
     }
