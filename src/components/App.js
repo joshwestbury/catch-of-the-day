@@ -5,6 +5,9 @@ import Inventory from './Inventory';
 import sampleFishes from  '../sample-fishes';
 import Fish from './Fish';
 import base from '../base';
+import PropTypes from 'prop-types';
+
+
 
 class App extends React.Component {
     constructor() {
@@ -115,5 +118,9 @@ class App extends React.Component {
         )
     }
 }
+
+App.propTypes = {
+    match: PropTypes.object.isRequired
+};
 
 export default App;
