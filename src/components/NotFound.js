@@ -6,5 +6,4 @@ const NotFound = ({location}) => (
     </div>
 )
 
-
 export default NotFound;
