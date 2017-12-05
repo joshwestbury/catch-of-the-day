@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-
 class AddFishForm extends React.Component {
     createFish(event) {
         event.preventDefault();
@@ -19,7 +18,6 @@ class AddFishForm extends React.Component {
         this.props.addFish(fish);
         this.fishForm.reset();
     }
-
 
     render() {
         return(
